@@ -1,0 +1,97 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and preferences",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "preferences": { "type": "object" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Product details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "category": { "type": "string" },
+        "image": { "type": "string" },
+        "rating": { "type": "number" },
+        "stock": { "type": "integer" },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["name", "price", "category"]
+    },
+    "BehaviorLog": {
+      "title": "BehaviorLog",
+      "description": "Tracking user interactions for AI recommendations",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "productId": { "type": "string" },
+        "action": { "type": "string", "enum": ["view", "click", "cart", "purchase"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "productId", "action", "timestamp"]
+    },
+    "Budget": {
+      "title": "Budget",
+      "description": "User's budget settings",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "monthlyLimit": { "type": "number" },
+        "spentThisMonth": { "type": "number" },
+        "currency": { "type": "string" }
+      },
+      "required": ["userId", "monthlyLimit"]
+    },
+    "CartItem": {
+      "title": "CartItem",
+      "description": "Items in user's cart",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "productId": { "type": "string" },
+        "quantity": { "type": "integer" },
+        "addedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "productId", "quantity"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Product catalog"
+    },
+    "/behaviorLogs/{logId}": {
+      "schema": "BehaviorLog",
+      "description": "User behavior tracking"
+    },
+    "/budgets/{userId}": {
+      "schema": "Budget",
+      "description": "User budget settings"
+    },
+    "/users/{userId}/cart/{productId}": {
+      "schema": "CartItem",
+      "description": "User shopping cart"
+    },
+    "/users/{userId}/wishlist/{productId}": {
+      "schema": "Product",
+      "description": "User wishlist"
+    }
+  }
+}

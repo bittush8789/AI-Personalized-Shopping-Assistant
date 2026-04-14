@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ai-shop-secrets
+type: Opaque
+data:
+  # Values must be base64 encoded
+  GEMINI_API_KEY: dGhpcy1pcy1hLXBsYWNlaG9sZGVyLWtleQ== # Replace with real base64 key
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-shop-deployment
+  labels:
+    app: ai-shop
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ai-shop
+  template:
+    metadata:
+      labels:
+        app: ai-shop
+    spec:
+      containers:
+      - name: ai-shop
+        image: ai-shop-assistant:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: GEMINI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ai-shop-secrets
+              key: GEMINI_API_KEY
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-shop-service
+spec:
+  selector:
+    app: ai-shop
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer

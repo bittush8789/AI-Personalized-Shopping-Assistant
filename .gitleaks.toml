@@ -1,0 +1,12 @@
+[allowlist]
+description = "Allowlist for AI Shop"
+paths = [
+    "src/lib/sampleData.ts",
+    "firebase-applet-config.json"
+]
+
+[rules]
+[[rules]]
+description = "Generic API Key"
+regex = '''(?i)api[-_]?key|secret|token|password'''
+keywords = ["key", "secret", "token", "password"]

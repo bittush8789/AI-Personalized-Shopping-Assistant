@@ -1,0 +1,6 @@
+{
+  "name": "AI Personalized Shopping Assistant",
+  "description": "A smart shopping platform with AI recommendations, budget planning, and voice search.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": []
+}

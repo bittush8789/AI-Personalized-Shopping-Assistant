@@ -1,0 +1,63 @@
+openapi: 3.0.0
+info:
+  title: AI Personalized Shopping Assistant API
+  description: API for managing products, behavior logs, and AI recommendations.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+paths:
+  /api/health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+  /metrics:
+    get:
+      summary: Prometheus metrics
+      responses:
+        '200':
+          description: Prometheus metrics in text format
+          content:
+            text/plain:
+              schema:
+                type: string
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+        category:
+          type: string
+        image:
+          type: string
+        rating:
+          type: number
+    BehaviorLog:
+      type: object
+      properties:
+        userId:
+          type: string
+        productId:
+          type: string
+        action:
+          type: string
+          enum: [view, click, cart, purchase]
+        timestamp:
+          type: string
+          format: date-time
